@@ -384,53 +384,48 @@ body.dark .kb-hint{color:var(--g500)}
       <div class="sb-lbl" id="lbl-who">Who Answered?</div>
       <div class="pg-group">
         <span class="pg-group-lbl">&#128295; Networking</span>
-        <select class="persona-sel" onchange="if(this.value)selP(this.value,null)">
-          <option value="">-- Select title --</option>
-          <option value="net_eng">Network Engineer</option>
-          <option value="net_arch">Network Architect / Sr. Engineer</option>
-          <option value="net_mgr">Network Manager / Team Lead</option>
-          <option value="net_admin">Network Admin / Ops</option>
-        </select>
+        <div class="pg-grid">
+          <button class="pcard" onclick="selP('net_eng',this)">Net Engineer</button>
+          <button class="pcard" onclick="selP('net_arch',this)">Net Architect</button>
+          <button class="pcard" onclick="selP('net_mgr',this)">Net Manager</button>
+          <button class="pcard" onclick="selP('net_admin',this)">Net Admin</button>
+        </div>
       </div>
       <div class="pg-group">
         <span class="pg-group-lbl">&#128272; Security</span>
-        <select class="persona-sel" onchange="if(this.value)selP(this.value,null)">
-          <option value="">-- Select title --</option>
-          <option value="sec_eng">Security Engineer / Analyst</option>
-          <option value="sec_arch">Security Architect / Sr. Engineer</option>
-          <option value="sec_mgr">Security Manager / Team Lead</option>
-          <option value="infosec">InfoSec Engineer / Cloud &amp; App Sec</option>
-        </select>
+        <div class="pg-grid">
+          <button class="pcard" onclick="selP('sec_eng',this)">Sec Engineer</button>
+          <button class="pcard" onclick="selP('sec_arch',this)">Sec Architect</button>
+          <button class="pcard" onclick="selP('sec_mgr',this)">Sec Manager</button>
+          <button class="pcard" onclick="selP('infosec',this)">InfoSec / Cloud</button>
+        </div>
       </div>
       <div class="pg-group">
         <span class="pg-group-lbl">&#128187; IT</span>
-        <select class="persona-sel" onchange="if(this.value)selP(this.value,null)">
-          <option value="">-- Select title --</option>
-          <option value="it_mgr">IT Manager / Ops &amp; Infra</option>
-          <option value="it_dir">IT Director / Infra &amp; Ops</option>
-          <option value="sysadmin">Sys Admin / Help Desk</option>
-          <option value="it_arch">IT Architect / Enterprise Arch</option>
-        </select>
+        <div class="pg-grid">
+          <button class="pcard" onclick="selP('it_mgr',this)">IT Manager</button>
+          <button class="pcard" onclick="selP('it_dir',this)">IT Director</button>
+          <button class="pcard" onclick="selP('sysadmin',this)">Sys Admin</button>
+          <button class="pcard" onclick="selP('it_arch',this)">IT Architect</button>
+        </div>
       </div>
       <div class="pg-group">
         <span class="pg-group-lbl">&#128225; Director Level</span>
-        <select class="persona-sel" onchange="if(this.value)selP(this.value,null)">
-          <option value="">-- Select title --</option>
-          <option value="dir_net">Director of Networking</option>
-          <option value="dir_sec">Director of Security</option>
-          <option value="dir_infra">Director of Infrastructure</option>
-          <option value="dir_it">Director of IT</option>
-        </select>
+        <div class="pg-grid">
+          <button class="pcard" onclick="selP('dir_net',this)">Dir Networking</button>
+          <button class="pcard" onclick="selP('dir_sec',this)">Dir Security</button>
+          <button class="pcard" onclick="selP('dir_infra',this)">Dir Infra</button>
+          <button class="pcard" onclick="selP('dir_it',this)">Dir IT</button>
+        </div>
       </div>
       <div class="pg-group">
         <span class="pg-group-lbl">&#127963;&#65039; VP / Executive</span>
-        <select class="persona-sel" onchange="if(this.value)selP(this.value,null)">
-          <option value="">-- Select title --</option>
-          <option value="vp_net">VP of Networking</option>
-          <option value="vp_sec">VP of Security</option>
-          <option value="ciso">CISO / CSO</option>
-          <option value="cio">CIO / CTO</option>
-        </select>
+        <div class="pg-grid">
+          <button class="pcard" onclick="selP('vp_net',this)">VP Networking</button>
+          <button class="pcard" onclick="selP('vp_sec',this)">VP Security</button>
+          <button class="pcard" onclick="selP('ciso',this)">CISO / CSO</button>
+          <button class="pcard" onclick="selP('cio',this)">CIO / CTO</button>
+        </div>
       </div>
       <hr class="sb-sep">
       <div class="sb-lbl" id="lbl-comp">Competitor (if known)</div>
@@ -2210,11 +2205,31 @@ const INDUSTRY_INSIGHTS={
 // ═══════════════════════════════════════════
 // EMAIL TEMPLATES
 // ═══════════════════════════════════════════
+const CUSTOMER_REFS={
+  'Healthcare & Life Sciences':{en:'Bio-Rad deployed Versa across 130 locations globally in just 100 days \u2014 simplifying management and cutting costs.',es:'Bio-Rad implement\u00f3 Versa en 130 ubicaciones globales en solo 100 d\u00edas \u2014 simplificando la gesti\u00f3n y reduciendo costos.',fr:'Bio-Rad a d\u00e9ploy\u00e9 Versa sur 130 sites mondiaux en seulement 100 jours \u2014 simplifiant la gestion et r\u00e9duisant les co\u00fbts.'},
+  'Financial Services & Banking':{en:'A global financial services firm centralized network management and achieved flexible, consistent policy enforcement across all branches with Versa.',es:'Una firma global de servicios financieros centraliz\u00f3 la gesti\u00f3n de red y logr\u00f3 pol\u00edticas consistentes en todas sus sucursales con Versa.',fr:'Une soci\u00e9t\u00e9 mondiale de services financiers a centralis\u00e9 sa gestion r\u00e9seau et appliqu\u00e9 des politiques coh\u00e9rentes \u00e0 toutes ses agences avec Versa.'},
+  'Manufacturing & Industrial':{en:'Dell achieved 130% ROI and $1.5M in savings within 9 months of deploying Versa.',es:'Dell logr\u00f3 un ROI del 130% y $1.5M en ahorros en 9 meses con Versa.',fr:'Dell a atteint un ROI de 130% et 1,5M$ d\u2019\u00e9conomies en 9 mois avec Versa.'},
+  'Retail & E-Commerce':{en:'A global retailer deployed Versa across 600+ locations \u2014 improving costs and reducing operational overhead.',es:'Un retailer global implement\u00f3 Versa en m\u00e1s de 600 ubicaciones \u2014 mejorando costos y reduciendo carga operativa.',fr:'Un distributeur mondial a d\u00e9ploy\u00e9 Versa sur plus de 600 sites \u2014 r\u00e9duisant les co\u00fbts et la charge op\u00e9rationnelle.'},
+  'Government & Public Sector':{en:'Dorset Council unlocked \u00a31M in savings and cut connectivity costs by 50% as part of their digital transformation with Versa.',es:'Dorset Council ahorr\u00f3 \u00a31M y redujo costos de conectividad un 50% en su transformaci\u00f3n digital con Versa.',fr:'Le conseil de Dorset a \u00e9conomis\u00e9 1M\u00a3 et r\u00e9duit de 50% ses co\u00fbts de connectivit\u00e9 lors de sa transformation num\u00e9rique avec Versa.'},
+  'Technology & SaaS':{en:'Adobe achieved a 50%+ TCO reduction over 5 years while maintaining four-nines availability with Versa.',es:'Adobe logr\u00f3 una reducci\u00f3n del 50%+ en TCO en 5 a\u00f1os manteniendo disponibilidad de cuatro nueves con Versa.',fr:'Adobe a r\u00e9duit son TCO de plus de 50% sur 5 ans tout en maintenant une disponibilit\u00e9 quatre-neuf avec Versa.'},
+  'Energy & Utilities':{en:'SB Energy improved their security posture and increased productivity with Versa\u2019s secure cloud access across all sites.',es:'SB Energy mejor\u00f3 su postura de seguridad y aument\u00f3 la productividad con el acceso seguro a la nube de Versa.',fr:'SB Energy a am\u00e9lior\u00e9 sa posture de s\u00e9curit\u00e9 et augment\u00e9 sa productivit\u00e9 gr\u00e2ce \u00e0 l\u2019acc\u00e8s cloud s\u00e9curis\u00e9 de Versa.'},
+  'Education & Higher Ed':{en:'Dell achieved 130% ROI and $1.5M in savings within 9 months of deploying Versa \u2014 a model for large campus environments.',es:'Dell logr\u00f3 un ROI del 130% y $1.5M en ahorros en 9 meses con Versa \u2014 un modelo para entornos de campus.',fr:'Dell a atteint 130% de ROI et 1,5M$ d\u2019\u00e9conomies en 9 mois avec Versa \u2014 un mod\u00e8le pour les grands campus.'},
+  'Telecommunications':{en:'Lintasarta serves 2,400+ customers and secures 35,000+ networks using Versa\u2019s carrier-grade platform.',es:'Lintasarta atiende a m\u00e1s de 2,400 clientes y asegura m\u00e1s de 35,000 redes con la plataforma de grado carrier de Versa.',fr:'Lintasarta sert plus de 2 400 clients et s\u00e9curise plus de 35 000 r\u00e9seaux gr\u00e2ce \u00e0 la plateforme de qualit\u00e9 op\u00e9rateur de Versa.'},
+  'Hospitality & Travel':{en:'A global retailer deployed Versa across 600+ distributed locations with consistent security \u2014 the same model applies to hospitality franchises.',es:'Un retailer global implement\u00f3 Versa en m\u00e1s de 600 ubicaciones distribuidas \u2014 el mismo modelo aplica para franquicias de hospitalidad.',fr:'Un distributeur mondial a d\u00e9ploy\u00e9 Versa sur plus de 600 sites distribu\u00e9s \u2014 le m\u00eame mod\u00e8le s\u2019applique aux franchises hospitali\u00e8res.'},
+  'Logistics & Transportation':{en:'Thermo King Christensen gets sites up and running securely in minutes, not days, with Versa.',es:'Thermo King Christensen pone sus sitios en funcionamiento de forma segura en minutos, no d\u00edas, con Versa.',fr:'Thermo King Christensen met ses sites en service de mani\u00e8re s\u00e9curis\u00e9e en minutes, pas en jours, gr\u00e2ce \u00e0 Versa.'},
+  'Payments & FinTech':{en:'A global credit card payments company achieved high availability and enhanced security with Versa\u2019s unified platform.',es:'Una empresa global de pagos con tarjeta logr\u00f3 alta disponibilidad y seguridad mejorada con la plataforma unificada de Versa.',fr:'Une soci\u00e9t\u00e9 mondiale de paiements par carte a atteint une haute disponibilit\u00e9 et une s\u00e9curit\u00e9 renforc\u00e9e avec Versa.'},
+  'Software / ISV':{en:'Adobe achieved a 50%+ TCO reduction over 5 years while maintaining four-nines availability with Versa.',es:'Adobe logr\u00f3 una reducci\u00f3n del 50%+ en TCO en 5 a\u00f1os con disponibilidad de cuatro nueves con Versa.',fr:'Adobe a r\u00e9duit son TCO de plus de 50% sur 5 ans avec une disponibilit\u00e9 quatre-neuf gr\u00e2ce \u00e0 Versa.'},
+  'Legal & Professional Services':{en:'Thornton Tomasetti manages all SASE components under one intuitive interface with Versa \u2014 reducing complexity and costs.',es:'Thornton Tomasetti gestiona todos los componentes SASE bajo una interfaz intuitiva con Versa \u2014 reduciendo complejidad y costos.',fr:'Thornton Tomasetti g\u00e8re tous les composants SASE sous une interface intuitive avec Versa \u2014 r\u00e9duisant complexit\u00e9 et co\u00fbts.'},
+  'Media & Entertainment':{en:'McLaren Racing uses Versa for reliable, secure, and optimized connectivity during race weekends \u2014 where milliseconds matter.',es:'McLaren Racing usa Versa para conectividad confiable, segura y optimizada durante fines de semana de carrera \u2014 donde los milisegundos importan.',fr:'McLaren Racing utilise Versa pour une connectivit\u00e9 fiable, s\u00e9curis\u00e9e et optimis\u00e9e lors des week-ends de course \u2014 o\u00f9 chaque milliseconde compte.'},
+  'Insurance':{en:'A global financial services firm centralized management and achieved consistent policy enforcement across all branches with Versa.',es:'Una firma global de servicios financieros centraliz\u00f3 la gesti\u00f3n y logr\u00f3 pol\u00edticas consistentes en todas sus sucursales con Versa.',fr:'Une soci\u00e9t\u00e9 mondiale de services financiers a centralis\u00e9 sa gestion et appliqu\u00e9 des politiques coh\u00e9rentes \u00e0 toutes ses agences avec Versa.'}
+};
 const EMAIL_T=[
   {name:{en:'Direct Pitch',es:'Pitch Directo',fr:'Pitch Direct'},
    en:{
      subjects:['Quick note \u2014 Versa Networks + [COMPANY]','[FIRST] \u2014 thought this might be relevant','Wanted to introduce Versa to [COMPANY]'],
      body:(fn,ln,co,title,ind,vendor,sig)=>`Hey ${fn||'[First Name]'},
+
+[Personalize: mention something from their LinkedIn, recent press release, annual report, or company news — make it about THEM before you pitch]
 
 I'll keep it brief \u2014 I'm with Versa Networks. We're a Gartner-recognized SD-WAN and SASE platform trusted by companies like P&G, US Bank, and some of the largest enterprises in the world.
 
@@ -2225,6 +2240,8 @@ Versa consolidates SD-WAN, ZTNA, SWG, CASB, and firewall into a single platform 
 \u2022 20\u201340% reduction in network operations overhead
 \u2022 Consistent security policy across cloud, branch, and remote \u2014 automatically
 
+${(CUSTOMER_REFS[ind]||{}).en||'Companies like P&G, Adobe, and Dell are already seeing measurable results with Versa.'}
+
 Worth a 15-minute conversation to see if it\u2019s relevant for ${co||'your team'}?
 
 ${sig}`
@@ -2232,6 +2249,8 @@ ${sig}`
    es:{
      subjects:['Nota r\u00e1pida \u2014 Versa Networks + [EMPRESA]','[NOMBRE] \u2014 pens\u00e9 que esto podr\u00eda ser relevante'],
      body:(fn,ln,co,title,ind,vendor,sig)=>`Hola ${fn||'[Nombre]'},
+
+[Personaliza: menciona algo de su LinkedIn, comunicado de prensa, informe anual o noticias de la empresa \u2014 hazlo sobre ELLOS antes de tu pitch]
 
 Ser\u00e9 breve \u2014 soy parte del equipo de Versa Networks. Somos una plataforma SD-WAN y SASE reconocida por Gartner, con clientes como P&G y US Bank.
 
@@ -2242,6 +2261,8 @@ Versa consolida SD-WAN, ZTNA, SWG, CASB y firewall en una sola plataforma:
 \u2022 Reducci\u00f3n del 20\u201340% en carga operativa de redes
 \u2022 Pol\u00edtica de seguridad consistente en nube, sucursales y usuarios remotos
 
+${(CUSTOMER_REFS[ind]||{}).es||'Empresas como P&G, Adobe y Dell ya est\u00e1n viendo resultados medibles con Versa.'}
+
 \u00bfValdr\u00eda 15 minutos explorar si esto es relevante para ${co||'su equipo'}?
 
 ${sig}`
@@ -2249,6 +2270,8 @@ ${sig}`
    fr:{
      subjects:['Message rapide \u2014 Versa Networks + [ENTREPRISE]','[PR\u00c9NOM] \u2014 je pense que cela pourrait vous int\u00e9resser'],
      body:(fn,ln,co,title,ind,vendor,sig)=>`Bonjour ${fn||'[Pr\u00e9nom]'},
+
+[Personnalisez : mentionnez quelque chose de leur LinkedIn, communiqu\u00e9 de presse, rapport annuel ou actualit\u00e9s \u2014 parlez d\u2019EUX avant votre pitch]
 
 Je serai bref \u2014 je travaille chez Versa Networks. Nous sommes une plateforme SD-WAN et SASE reconnue par Gartner, avec des clients comme P&G et US Bank.
 
@@ -2258,6 +2281,8 @@ Versa consolide SD-WAN, ZTNA, SWG, CASB et pare-feu en une seule plateforme :
 \u2022 R\u00e9duction des co\u00fbts de 30\u201350%
 \u2022 R\u00e9duction de 20\u201340% de la charge op\u00e9rationnelle
 \u2022 Politique de s\u00e9curit\u00e9 coh\u00e9rente cloud, branches et distant
+
+${(CUSTOMER_REFS[ind]||{}).fr||'Des entreprises comme P&G, Adobe et Dell obtiennent d\u00e9j\u00e0 des r\u00e9sultats mesurables avec Versa.'}
 
 Cela vaut-il 15 minutes pour voir si c\u2019est pertinent pour ${co||'votre \u00e9quipe'} ?
 
@@ -2811,11 +2836,8 @@ Je ne vends rien ici \u2014 simplement curieux de savoir comment des \u00e9quipe
 // ═══════════════════════════════════════════
 function selP(key,el){
   curP=key;
-  document.querySelectorAll('.persona-sel').forEach(s=>{s.classList.remove('sel');});
-  // Highlight the active select (the one whose value matches key)
-  document.querySelectorAll('.persona-sel').forEach(s=>{
-    if(s.value===key) s.classList.add('sel');
-  });
+  document.querySelectorAll('.pcard').forEach(b=>{b.classList.remove('sel');});
+  if(el) el.classList.add('sel');
   document.getElementById('call-ph').style.display='none';
   document.getElementById('call-content').style.display='block';
   const p=PERSONAS[key];
@@ -2842,7 +2864,7 @@ function selP(key,el){
 
 function resetCall(){
   curP=null;
-  document.querySelectorAll('.persona-sel').forEach(s=>{s.value='';s.classList.remove('sel');});
+  document.querySelectorAll('.pcard').forEach(b=>{b.classList.remove('sel');});
   document.getElementById('call-ph').style.display='';
   document.getElementById('call-content').style.display='none';
 }

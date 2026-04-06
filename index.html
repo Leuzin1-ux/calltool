@@ -246,7 +246,7 @@ textarea:focus{outline:none;border-color:var(--blue)}
 .b-cr{background:#fff0f0;color:#c0392b}.b-ga{background:#fff8e1;color:#b7860a}
 .b-go{background:#e8f4e8;color:#2e7d32}.b-vr{background:#e8f0ff;color:#1a5cbf}
 .b-cs{background:#f3e8ff;color:#7b2d8b}.b-ds{background:#e8f4ff;color:#1a5cbf}
-.b-lk{background:#f0f4ff;color:#3a5cbf}.b-roi{background:#e8fff4;color:#1a7a4a}
+.b-lk{background:#f0f4ff;color:#3a5cbf}.b-wt{background:#e0f7fa;color:#00796b}.b-roi{background:#e8fff4;color:#1a7a4a}
 .rc-desc{font-size:12px;color:var(--g600);line-height:1.5}
 .rc-stat{font-size:12px;font-weight:600;color:var(--blue)}
 .rc-tags{display:flex;gap:5px;flex-wrap:wrap}
@@ -713,6 +713,7 @@ body.dark .kb-hint{color:var(--g500)}
     <button class="res-pill" onclick="filterRes('stories',this)">&#127942; Customer Stories</button>
     <button class="res-pill" onclick="filterRes('roi',this)">&#128176; ROI Stats</button>
     <button class="res-pill" onclick="filterRes('datasheets',this)">&#128196; Datasheets</button>
+    <button class="res-pill" onclick="filterRes('walkthroughs',this)">&#127916; Walkthroughs</button>
     <button class="res-pill" onclick="filterRes('links',this)">&#128279; Quick Links</button>
   </div>
   <div class="res-body" id="res-content"></div>
@@ -1404,8 +1405,8 @@ const OBJECTIONS=[
   },
   {type:'st',label:'Stall',
    en:{trigger:'"Send me some information / email" or "I need to think about it"',
-       track:'[Agree]: Not a problem, I can definitely do that\n\n[Call out the elephant in the room]: Just so I don\'t waste your time, can I ask you something real quick?\n\nTypically, if someone ever says [whatever they just said] it\'s their polite way of saying this isn\'t a priority right now, which is totally fine.\n\nWould you say that\'s the case here, or are you actually open to exploring how we could help?\n\n[Go for the close again]: I can send you an email, but let me do you one better. Rather than send you an email with generic info, what we\'ve found to be more helpful is to set up a brief convo so that you can actually SEE how this would benefit you specifically based on your unique situation. Would that be ok - do you have 30 minutes on _________?',
-       followup:'The key is calling out the stall directly but respectfully.'}
+       track:'[Agree]: Not a problem, I can definitely do that\n\n[Call out the elephant in the room]: Just so I don\'t waste your time, can I ask you something real quick?\n\nTypically, if someone ever says [whatever they just said] it\'s their polite way of saying this isn\'t a priority right now, which is totally fine.\n\nWould you say that\'s the case here, or are you actually open to exploring how we could help?\n\n[Go for the close again]: I can send you an email, but let me do you one better. Rather than send you an email with generic info, what we\'ve found to be more helpful is to set up a brief convo so that you can actually SEE how this would benefit you specifically based on your unique situation. Would that be ok - do you have 30 minutes on _________?\n\n[If they still resist]: Totally fair. Let me send you a quick 2-minute interactive walkthrough of our platform instead \u2014 you can see it on your own time, no meeting needed: versa-networks.com/resources/product-walkthrough/',
+       followup:'The key is calling out the stall directly but respectfully. If they still push back, the walkthrough is your fallback \u2014 it gives them something concrete and keeps the door open.'}
   },
   {type:'st',label:'Stall',
    en:{trigger:'"Call me back in ___ weeks / months"',
@@ -2022,6 +2023,19 @@ const DATASHEETS=[
   {n:"Full Product Catalog",tag:"All",desc:"Browse all Versa products, solutions, and deployment options.",url:"https://versa-networks.com/products/"}
 ];
 
+const WALKTHROUGHS=[
+  {n:"Versa SSE: ZTNA",tag:"SSE",time:"2-3 min",desc:"See how Versa ZTNA replaces legacy VPN with identity-based zero trust access.",url:"https://versa-networks.com/resources/product-walkthrough/",personas:['sec_eng','sec_arch','sec_mgr','infosec','net_arch','it_dir','dir_sec','vp_sec','ciso']},
+  {n:"Versa SSE: GenAI Firewall",tag:"Security",time:"2-3 min",desc:"See how Versa governs ChatGPT, Copilot, and GenAI apps with full visibility and policy control.",url:"https://versa-networks.com/resources/product-walkthrough/",personas:['sec_eng','sec_arch','infosec','ciso','cio','dir_sec']},
+  {n:"Versa SSE: CASB (Inline)",tag:"SSE",time:"2-3 min",desc:"See inline CASB in action \u2014 real-time visibility and control over SaaS apps.",url:"https://versa-networks.com/resources/product-walkthrough/",personas:['sec_eng','sec_arch','infosec','it_dir','dir_sec']},
+  {n:"Versa NGFW: RBI",tag:"Security",time:"2-3 min",desc:"See Remote Browser Isolation \u2014 users browse safely without risk of web-based threats.",url:"https://versa-networks.com/resources/product-walkthrough/",personas:['sec_eng','sec_arch','sec_mgr','infosec']},
+  {n:"Versa Digital Experience Manager (DEM)",tag:"Networking",time:"5 min",desc:"See end-to-end digital experience monitoring \u2014 from user device to app, in real time.",url:"https://versa-networks.com/resources/product-walkthrough/",personas:['net_eng','net_arch','net_mgr','it_mgr','it_dir','it_arch','dir_net','dir_infra']},
+  {n:"Versa API-based CASB: Microsoft Teams",tag:"SSE",time:"5 min",desc:"See API-based CASB protecting Microsoft Teams data \u2014 DLP, sharing controls, compliance.",url:"https://versa-networks.com/resources/product-walkthrough/",personas:['sec_eng','infosec','it_mgr','sec_arch']},
+  {n:"Versa API-based CASB: Box",tag:"SSE",time:"5 min",desc:"See API-based CASB protecting Box \u2014 file sharing visibility, DLP, and compliance controls.",url:"https://versa-networks.com/resources/product-walkthrough/",personas:['sec_eng','infosec','it_mgr','sec_arch']},
+  {n:"Versa API-based CASB: Microsoft OneDrive",tag:"SSE",time:"5 min",desc:"See API-based CASB protecting OneDrive \u2014 DLP, external sharing, compliance monitoring.",url:"https://versa-networks.com/resources/product-walkthrough/",personas:['sec_eng','infosec','it_mgr','sec_arch']},
+  {n:"Securing Salesforce with Versa CASB & DLP",tag:"SSE",time:"5 min",desc:"See how Versa CASB & DLP protect Salesforce data \u2014 prevent exfiltration, enforce compliance.",url:"https://versa-networks.com/resources/product-walkthrough/",personas:['sec_eng','infosec','sec_arch','it_dir']},
+  {n:"Securing Microsoft 365 with Versa CASB & DLP",tag:"SSE",time:"5 min",desc:"See how Versa protects the full M365 suite \u2014 Teams, OneDrive, SharePoint, Outlook.",url:"https://versa-networks.com/resources/product-walkthrough/",personas:['sec_eng','infosec','it_mgr','it_dir','sec_arch']},
+  {n:"Versa URL Filtering (SWG)",tag:"SSE",time:"5 min",desc:"See Secure Web Gateway URL filtering in action \u2014 category-based policy, threat blocking.",url:"https://versa-networks.com/resources/product-walkthrough/",personas:['sec_eng','sec_mgr','net_eng','infosec','it_mgr']}
+];
 const QLINKS=[
   {n:"Bigtincan Content Library",desc:"All Versa sales assets, presentations, and approved content.",icon:"📚",url:"https://app.bigtincan.com"},
   {n:"Versa Customer Stories",desc:"Official case studies - Adobe, P&G, Carnival, Maersk, and more.",icon:"⭐",url:"https://versa-networks.com/customers/"},
@@ -2105,6 +2119,21 @@ function renderResources(filter){
       h+="<div class=\"roi-ctx\">"+e(s.ctx)+"</div>";
       h+="<button class=\"rc-copy\" data-copy=\""+e(s.talk)+"\">Copy Talking Point</button>";
       h+="</div>";
+    });
+    h+="</div></div>";
+  }
+
+  // Walkthroughs
+  if(f==="all"||f==="walkthroughs"){
+    h+="<div class=\"res-sec\"><div class=\"res-sec-ttl\">&#127916; Product Walkthroughs &mdash; Send to prospects before asking for a meeting</div><div class=\"res-grid\">";
+    WALKTHROUGHS.forEach(function(w){
+      h+="<div class=\"rc\">";
+      h+="<div class=\"rc-top\"><div class=\"rc-name\">"+e(w.n)+"</div><span class=\"rc-badge b-wt\">"+e(w.time)+"</span></div>";
+      h+="<div class=\"rc-desc\">"+e(w.desc)+"</div>";
+      h+="<div class=\"rc-acts\">";
+      h+="<a class=\"rc-open\" href=\""+e(w.url)+"\" target=\"_blank\" rel=\"noopener\">View &#8599;</a>";
+      h+="<button class=\"rc-copy\" data-copy=\""+e(w.url)+"\">Copy Link</button>";
+      h+="</div></div>";
     });
     h+="</div></div>";
   }
@@ -2600,6 +2629,76 @@ Je ne suis pas l\u00e0 pour d\u00e9nigrer ${vendor||'votre fournisseur actuel'} 
 ${sig}`;
      }
    }
+  },
+  {name:{en:'Walkthrough Share',es:'Compartir Walkthrough',fr:'Partage Walkthrough'},
+   en:{
+     subjects:['2-min walkthrough \u2014 no meeting needed','[FIRST], thought this was worth a look','Quick walkthrough for ${co||\'your team\'}'],
+     body:(fn,ln,co,title,ind,vendor,sig)=>{
+       const wtMap={
+         'Network Engineer':'Versa Digital Experience Manager (DEM)','Network Architect':'Versa SSE: ZTNA',
+         'Security Engineer':'Versa SSE: GenAI Firewall','Security Architect':'Versa SSE: ZTNA',
+         'Cybersecurity Analyst':'Versa SSE: CASB (Inline)','InfoSec Engineer':'Versa SSE: GenAI Firewall',
+         'IT Manager':'Securing Microsoft 365 with Versa CASB & DLP','IT Director':'Versa SSE: ZTNA',
+         'Systems Administrator':'Versa URL Filtering (SWG)','IT Architect':'Versa Digital Experience Manager (DEM)',
+         'Director of Networking':'Versa Digital Experience Manager (DEM)','Director of Security':'Versa SSE: GenAI Firewall',
+         'Director of Infrastructure':'Versa SSE: ZTNA','Director of IT':'Securing Microsoft 365 with Versa CASB & DLP',
+         'VP of Networking':'Versa Digital Experience Manager (DEM)','VP of Security':'Versa SSE: GenAI Firewall',
+         'CISO':'Versa SSE: GenAI Firewall','CSO':'Versa SSE: ZTNA','CIO':'Versa SSE: ZTNA','CTO':'Versa SSE: ZTNA'
+       };
+       const wt=wtMap[title]||'Versa SSE: ZTNA';
+       return `Hey ${fn||'[First Name]'},
+
+[Personalize: mention something from their LinkedIn, recent press release, annual report, or company news]
+
+Instead of asking for a meeting, I wanted to share something you can check out on your own time.
+
+Our product marketing team just published an interactive walkthrough of ${wt} \u2014 it\u2019s a quick 2-5 minute self-guided demo that shows exactly how it works. No form fill, no sales follow-up required.
+
+\ud83d\udc49 versa-networks.com/resources/product-walkthrough/
+
+I send these to ${title||'networking and security'} leaders because it\u2019s more useful than a generic PDF, and you can see the actual platform in action.
+
+If it sparks any questions, I\u2019m here. If not \u2014 no worries at all.
+
+${sig}`;
+     }
+   },
+   es:{
+     subjects:['Walkthrough de 2 min \u2014 sin necesidad de reuni\u00f3n','[NOMBRE], pens\u00e9 que valdr\u00eda la pena verlo'],
+     body:(fn,ln,co,title,ind,vendor,sig)=>`Hola ${fn||'[Nombre]'},
+
+[Personaliza: menciona algo de su LinkedIn, comunicado de prensa o noticias de la empresa]
+
+En vez de pedir una reuni\u00f3n, quise compartir algo que puedes revisar cuando quieras.
+
+Nuestro equipo de product marketing acaba de publicar un walkthrough interactivo de la plataforma Versa \u2014 es una demo autoguiada de 2-5 minutos que muestra exactamente c\u00f3mo funciona. Sin formularios, sin seguimiento de ventas.
+
+\ud83d\udc49 versa-networks.com/resources/product-walkthrough/
+
+Lo comparto con l\u00edderes de ${title||'redes y seguridad'} porque es m\u00e1s \u00fatil que un PDF gen\u00e9rico \u2014 puedes ver la plataforma real en acci\u00f3n.
+
+Si te genera alguna pregunta, aqu\u00ed estoy. Si no \u2014 sin problema.
+
+${sig}`
+   },
+   fr:{
+     subjects:['Walkthrough de 2 min \u2014 pas de r\u00e9union n\u00e9cessaire','[PR\u00c9NOM], je pense que cela vaut le coup d\u2019\u0153il'],
+     body:(fn,ln,co,title,ind,vendor,sig)=>`Bonjour ${fn||'[Pr\u00e9nom]'},
+
+[Personnalisez : mentionnez quelque chose de leur LinkedIn, communiqu\u00e9 de presse ou actualit\u00e9s]
+
+Plut\u00f4t que de demander une r\u00e9union, je voulais partager quelque chose que vous pouvez consulter \u00e0 votre rythme.
+
+Notre \u00e9quipe marketing produit vient de publier un walkthrough interactif de la plateforme Versa \u2014 une d\u00e9mo autoguide\u00e9 de 2-5 minutes qui montre exactement comment \u00e7a fonctionne. Pas de formulaire, pas de suivi commercial.
+
+\ud83d\udc49 versa-networks.com/resources/product-walkthrough/
+
+Je l\u2019envoie aux responsables ${title||'r\u00e9seau et s\u00e9curit\u00e9'} car c\u2019est plus utile qu\u2019un PDF g\u00e9n\u00e9rique \u2014 vous voyez la plateforme r\u00e9elle en action.
+
+Si cela suscite des questions, je suis disponible. Sinon \u2014 pas de souci.
+
+${sig}`
+   }
   }
 ];
 
@@ -2828,6 +2927,31 @@ Est-ce quelque chose que vous observez \u00e9galement chez ${co||'votre entrepri
 
 Je ne vends rien ici \u2014 simplement curieux de savoir comment des \u00e9quipes comme la v\u00f4tre g\u00e8rent cela.`;
    }}
+  },
+  {name:{en:'Walkthrough Drop',es:'Enviar Walkthrough',fr:'Partage Walkthrough'},
+   tip:{en:'\ud83c\udfac Value-first \u2014 no meeting ask. Share a self-guided product walkthrough. Best as a follow-up or warm touch.',es:'\ud83c\udfac Valor primero \u2014 sin pedir reuni\u00f3n. Comparte un walkthrough autoguiado. Ideal como seguimiento.',fr:'\ud83c\udfac Valeur d\u2019abord \u2014 pas de demande de r\u00e9union. Partagez un walkthrough autoguide\u00e9. Id\u00e9al en suivi.'},
+   maxChars:700,
+   en:{body:(fn,co,title,ind,detail,prev,sig)=>`Hey ${fn||'[First Name]'}, not asking for a meeting \u2014 just sharing something I thought might be useful.
+
+Our product team just published interactive walkthroughs of our SASE platform \u2014 2-5 min self-guided demos. No form, no follow-up.
+
+\ud83d\udc49 versa-networks.com/resources/product-walkthrough/
+
+If you manage ${title||'networking or security'}, the ZTNA and GenAI Firewall ones are worth a look. Let me know if anything stands out.`},
+   es:{body:(fn,co,title,ind,detail,prev,sig)=>`Hola ${fn||'[Nombre]'}, no pido una reuni\u00f3n \u2014 solo comparto algo que puede ser \u00fatil.
+
+Nuestro equipo de producto acaba de publicar walkthroughs interactivos de nuestra plataforma SASE \u2014 demos autoguiadas de 2-5 min. Sin formulario, sin seguimiento.
+
+\ud83d\udc49 versa-networks.com/resources/product-walkthrough/
+
+Si gestionas ${title||'redes o seguridad'}, los de ZTNA y GenAI Firewall valen la pena. Av\u00edsame si algo te llama la atenci\u00f3n.`},
+   fr:{body:(fn,co,title,ind,detail,prev,sig)=>`Bonjour ${fn||'[Pr\u00e9nom]'}, je ne demande pas de r\u00e9union \u2014 je partage juste quelque chose qui pourrait \u00eatre utile.
+
+Notre \u00e9quipe produit vient de publier des walkthroughs interactifs de notre plateforme SASE \u2014 d\u00e9mos autoguide\u00e9s de 2-5 min. Pas de formulaire, pas de suivi.
+
+\ud83d\udc49 versa-networks.com/resources/product-walkthrough/
+
+Si vous g\u00e9rez le ${title||'r\u00e9seau ou la s\u00e9curit\u00e9'}, les walkthroughs ZTNA et GenAI Firewall valent le d\u00e9tour. Dites-moi si quelque chose retient votre attention.`}
   }
 ];
 
